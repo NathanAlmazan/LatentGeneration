@@ -11,7 +11,7 @@ from autoencoder import Decoder
 
 def generate(labels: list[int]):
     # get label embedding
-    embeddings = np.load(os.path.join('checkpoints', 'embeddings.npy'))
+    embeddings = np.load(os.path.join('checkpoints', 'embeddings.npy'), allow_pickle=True)
     embeddings = torch.from_numpy(embeddings[labels])
     embeddings = embeddings.float().cuda()
     
