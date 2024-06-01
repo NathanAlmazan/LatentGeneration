@@ -18,11 +18,15 @@ def generate():
         if not prompt or not isinstance(prompt, str):
             return jsonify({'error': 'Prompt must be a non-empty string'}), 400
         
-        if count < 2 or count > 8:
-            return jsonify({'error': 'Count must be an integer between 2 and 8'}), 400
+        if count < 2 or count > 12:
+            return jsonify({'error': 'Count must be an integer between 2 and 12'}), 400
         
         # tokenize prompt
         labels = tokenize(prompt, count)
+        
+        if len(labels) == 0:
+            return jsonify({'error': 'Invalid prompt.'}), 400
+        
         images = generate_images(labels)
         
         return jsonify({'image_urls': [ f"https://imagine.automos.net/generated/{image}" for image in images ]})
