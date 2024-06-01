@@ -6,25 +6,28 @@ app = Flask(__name__)
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    body = request.json
+    try:
+        body = request.json
     
-    if body is None:
-        return jsonify({'error': 'Invalid request body'}), 400
-    
-    prompt = body['prompt']
-    count = body['count'] if isinstance(body['count'], int) else 8
-    
-    if not prompt or not isinstance(prompt, str):
-        return jsonify({'error': 'Prompt must be a non-empty string'}), 400
-    
-    if count < 2 or count > 8:
-        return jsonify({'error': 'Count must be an integer between 2 and 8'}), 400
-    
-    # tokenize prompt
-    labels = tokenize(prompt, count)
-    images = generate_images(labels)
-    
-    return jsonify({'image_urls': [ f"https://imagine.automos.net/generated/{image}" for image in images ]})
+        if body is None:
+            return jsonify({'error': 'Invalid request body'}), 400
+        
+        prompt = body['prompt']
+        count = body['count'] if isinstance(body['count'], int) else 8
+        
+        if not prompt or not isinstance(prompt, str):
+            return jsonify({'error': 'Prompt must be a non-empty string'}), 400
+        
+        if count < 2 or count > 8:
+            return jsonify({'error': 'Count must be an integer between 2 and 8'}), 400
+        
+        # tokenize prompt
+        labels = tokenize(prompt, count)
+        images = generate_images(labels)
+        
+        return jsonify({'image_urls': [ f"https://imagine.automos.net/generated/{image}" for image in images ]})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/generated/<path:filename>')
