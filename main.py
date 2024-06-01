@@ -1,4 +1,3 @@
-import os
 from generator import tokenize, generate_images
 from flask import Flask, request, jsonify, send_from_directory
 
