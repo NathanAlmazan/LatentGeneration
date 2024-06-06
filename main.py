@@ -44,7 +44,7 @@ def label_generate():
 
         labels = body['labels']
 
-        if len(labels) == 0:
+        if len(labels) == 0 or len(labels) > 12:
             return jsonify({'error': 'Invalid labels.'}), 400
 
         if len([label for label in labels if label < 0 or label > 500]) > 0:
